@@ -125,6 +125,7 @@ Background processing runs on five dedicated Sidekiq workers for event ingestion
 |------|-----------|
 | [backend](https://github.com/grovs-io/backend) | Rails API, link engine, attribution, workers |
 | [dashboard](https://github.com/grovs-io/dashboard) | Next.js web dashboard |
+| [mcp-server](https://github.com/grovs-io/mcp) | MCP Server |
 
 ## Docs
 
