@@ -1,54 +1,61 @@
-<p align="center">
-  <a href="https://grovs.io">
-    <img src="https://s3.eu-north-1.amazonaws.com/grovs.io/full-black.svg" alt="Grovs" width="220" />
-  </a>
-</p>
+<a href="https://grovs.io">
+  <img src="https://s3.eu-north-1.amazonaws.com/grovs.io/full-black.svg" alt="Grovs" width="120" />
+</a>
 
-<p align="center">
-  Open-source deep linking, attribution, and analytics for mobile apps.<br/>
-  Self-hostable alternative to Branch.io and AppsFlyer.
-</p>
+### The open-source mobile growth platform.
+Deep links, attribution, and campaign analytics. One SDK. Self-host or cloud.
 
-<p align="center">
-  <a href="https://app.grovs.io">Cloud</a> ·
-  <a href="https://docs.grovs.io">Docs</a> ·
-  <a href="https://docs.grovs.io/docs/self-hosting">Self-Hosting</a>
-</p>
+<a href="https://app.grovs.io">Cloud</a> ·
+<a href="https://docs.grovs.io">Docs</a> ·
+<a href="https://docs.grovs.io/docs/self-hosting">Self-Host</a> ·
+<a href="https://grovs.io/pricing">Pricing</a>
 
 ---
 
-Grovs gives you smart links, deferred deep linking, install attribution, analytics, push notifications, and in-app messaging — in one platform you can self-host or use as a managed service.
+Branch charges $10,000+/year for deep linking and attribution -- and [shares your users' data with ad networks](https://www.grovs.io/blog/your-mmp-is-selling-your-users-data-i-read-the-privacy-policies-so-you-dont-have-to). Grovs does the same job for $180/year, keeps your data in the EU, and the code is open source.
+
+**Your data stays yours.** No ad network partnerships. No cross-platform tracking. No probabilistic fingerprinting. We make money from subscriptions, not from your users' data. [Read why that matters.](https://www.grovs.io/blog/your-mmp-is-selling-your-users-data-i-read-the-privacy-policies-so-you-dont-have-to)
 
 ## Features
 
-- **Smart links** — one link that routes to the right destination on iOS, Android, or web
-- **Deferred deep linking** — users land on the right in-app screen, even after installing from the store
-- **Attribution** — track installs, reinstalls, and reactivations back to campaigns, referrals, or organic shares
-- **Analytics dashboard** — clicks, installs, revenue, and campaign performance in real time
-- **Push notifications** — send targeted messages via APNs and FCM from the dashboard
-- **In-app messages** — display announcements, promos, or onboarding flows without an app update
-- **Revenue tracking** — automatic in-app purchase tracking with Apple and Google webhook integration
-- **REST API** — create and manage links programmatically from your server
-- **Multi-tenant** — one instance serves multiple apps and teams
+- **Smart links** -- one link that routes to the right destination on iOS, Android, or web
+- **Deferred deep linking** -- users land on the right in-app screen, even after installing from the store
+- **Attribution** -- track installs, reinstalls, and reactivations back to campaigns, referrals, or organic sources
+- **Campaigns** -- create, manage, and compare campaign performance
+- **Analytics dashboard** -- clicks, installs, revenue, and campaign performance in real time
+- **Revenue tracking** -- automatic IAP tracking with Apple and Google webhook integration
+- **In-app messages** -- targeted announcements, promos, and onboarding flows without an app update
+- **REST API** -- create and manage links programmatically
+- **Multi-tenant** -- one instance serves multiple apps and teams
+
+## Roadmap
+
+We're building toward a full mobile growth platform -- everything CleverTap and Branch do, in one open-source product. What's coming:
+
+- [ ] **Event analytics + user journeys** -- custom events, funnels, user flows, session tracking (Q2 2026)
+- [ ] **Push campaigns** -- segmentation, scheduling, A/B testing (Q4 2026)
+- [ ] **Marketing automation** -- triggered campaigns based on user behavior (2027)
+
+Want to shape what we build next? [Open an issue](https://github.com/grovs-io/backend/issues) or reach out.
 
 ## Quick start
 
-### Cloud
+### Cloud (2 minutes)
 
-Sign up at [app.grovs.io](https://app.grovs.io), create a project, grab your API key, and add the SDK:
+Sign up at [app.grovs.io](https://app.grovs.io), create a project, add the SDK:
 
 ```swift
-// iOS — add via SPM: https://github.com/grovs-io/grovs-iOS.git
+// iOS — SPM: https://github.com/grovs-io/grovs-iOS.git
 Grovs.configure(APIKey: "your-api-key", useTestEnvironment: false, delegate: self)
 ```
 
 ```kotlin
-// Android — add io.grovs:Grovs:1.1.0 to build.gradle
+// Android — io.grovs:Grovs:1.1.0
 Grovs.configure(this, "your-api-key")
 ```
 
 ```dart
-// Flutter — add grovs_flutter_plugin: ^1.0.1 to pubspec.yaml
+// Flutter — grovs_flutter_plugin: ^1.0.1
 final grovs = Grovs();
 ```
 
@@ -59,14 +66,12 @@ grovs.start();
 ```
 
 ```bash
-# React Native
-npm install react-native-grovs-wrapper
-# Then follow iOS + Android native setup in the docs
+# React Native — npm install react-native-grovs-wrapper
 ```
 
-Full setup guides: [iOS](https://docs.grovs.io/docs/sdk/ios/quick-start) · [Android](https://docs.grovs.io/docs/sdk/android/quick-start) · [Flutter](https://docs.grovs.io/docs/sdk/flutter/quick-start) · [React Native](https://docs.grovs.io/docs/sdk/react-native/quick-start) · [Web](https://docs.grovs.io/docs/sdk/web/quick-start)
+Setup guides: [iOS](https://docs.grovs.io/docs/sdk/ios/quick-start) · [Android](https://docs.grovs.io/docs/sdk/android/quick-start) · [Flutter](https://docs.grovs.io/docs/sdk/flutter/quick-start) · [React Native](https://docs.grovs.io/docs/sdk/react-native/quick-start) · [Web](https://docs.grovs.io/docs/sdk/web/quick-start)
 
-### Self-hosted
+### Self-hosted (5 minutes)
 
 ```bash
 git clone https://github.com/grovs-io/backend.git && cd backend
@@ -77,7 +82,7 @@ docker compose up --build
 docker compose exec web bundle exec rails db:create db:migrate db:seed
 ```
 
-This starts the backend on port 8765 with PostgreSQL, Redis, and five Sidekiq workers. Then deploy the [dashboard](https://github.com/grovs-io/dashboard) and point your SDKs to your domain:
+Backend starts on port 8765 with PostgreSQL, Redis, and Sidekiq workers. Deploy the [dashboard](https://github.com/grovs-io/dashboard) and point your SDK:
 
 ```swift
 Grovs.configure(APIKey: "key", useTestEnvironment: false, baseURL: "https://yourdomain.com", delegate: self)
@@ -85,16 +90,29 @@ Grovs.configure(APIKey: "key", useTestEnvironment: false, baseURL: "https://your
 
 Full guide: [Backend](https://docs.grovs.io/docs/self-hosting/backend) · [Dashboard](https://docs.grovs.io/docs/self-hosting/dashboard) · [SDK config](https://docs.grovs.io/docs/self-hosting/sdk-configuration)
 
+## How it compares
+
+| | Branch | AppsFlyer | Grovs |
+|---|---|---|---|
+| Deep linking | Yes | No | Yes |
+| Attribution | Yes | Yes | Yes |
+| Campaign analytics | Limited | Yes | Yes |
+| Revenue tracking | No | Yes | Yes |
+| Open source | No | No | Yes (MIT) |
+| Self-hostable | No | No | Yes |
+| Data shared with ad networks | [Yes](https://branch.io/policies/privacy-policy/) | [Yes](https://www.appsflyer.com/privacy-policy/) | No |
+| Pricing | "Contact sales" | $15K+/yr | From $2k/yr |
+
 ## Architecture
 
-The backend is a Rails app with subdomain-based routing. A single server handles everything:
+Rails backend with subdomain-based routing:
 
 - `api.*` — dashboard API (OAuth2)
 - `sdk.*` — mobile SDK endpoints
 - `go.*` — short link redirects
 - `preview.*` — link preview pages
 
-Background processing runs on five dedicated Sidekiq workers for event ingestion, batch processing, scheduling, device updates, and maintenance.
+Background processing via five Sidekiq workers for event ingestion, batch processing, scheduling, device updates, and maintenance.
 
 ```
 ┌──────────────┐       ┌─────────────────────────────────┐
@@ -125,18 +143,17 @@ Background processing runs on five dedicated Sidekiq workers for event ingestion
 |------|-----------|
 | [backend](https://github.com/grovs-io/backend) | Rails API, link engine, attribution, workers |
 | [dashboard](https://github.com/grovs-io/dashboard) | Next.js web dashboard |
-| [mcp-server](https://github.com/grovs-io/mcp) | MCP Server |
+| [mcp-server](https://github.com/grovs-io/mcp) | MCP server for AI-assisted link management |
+
+## Migrating?
+
+- [From Firebase Dynamic Links](https://docs.grovs.io/docs/migration-guides/firebase-dynamic-links)
+- [From Branch.io](https://docs.grovs.io/docs/migration-guides/branch-io)
 
 ## Docs
 
-Full documentation at [docs.grovs.io](https://docs.grovs.io):
-
-- [Getting started](https://docs.grovs.io/docs/getting-started/introduction)
-- [Self-hosting guide](https://docs.grovs.io/docs/self-hosting)
-- [REST API reference](https://docs.grovs.io/docs/api-reference)
-- [Migration from Firebase Dynamic Links](https://docs.grovs.io/docs/migration-guides/firebase-dynamic-links)
-- [Migration from Branch.io](https://docs.grovs.io/docs/migration-guides/branch-io)
+[docs.grovs.io](https://docs.grovs.io) — [Getting started](https://docs.grovs.io/docs/getting-started/introduction) · [REST API](https://docs.grovs.io/docs/api-reference) · [Self-hosting](https://docs.grovs.io/docs/self-hosting)
 
 ## License
 
-Core is [MIT](LICENSE). Enterprise features (the `ee/` directory in the backend) require a separate license for production use.
+Core is [MIT](LICENSE). Enterprise features (`ee/` directory) require a separate license for production use.
