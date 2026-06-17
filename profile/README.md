@@ -74,24 +74,28 @@ grovs.start();
 
 Setup guides: [iOS](https://docs.grovs.io/docs/sdk/ios/quick-start) · [Android](https://docs.grovs.io/docs/sdk/android/quick-start) · [Flutter](https://docs.grovs.io/docs/sdk/flutter/quick-start) · [React Native](https://docs.grovs.io/docs/sdk/react-native/quick-start) · [Web](https://docs.grovs.io/docs/sdk/web/quick-start)
 
-### Self-hosted (5 minutes)
+<br><br>
+
+### Self-hosted
+  
+Grovs is fully self-hostable — run the entire platform on your own infrastructure with no feature gates and no data leaving your servers. A single Docker Compose stack brings up everything: the Rails backend, the Next.js dashboard, PostgreSQL, Redis, MinIO object storage, the Sidekiq workers, and a Caddy reverse proxy with automatic TLS. The backend and dashboard come in as git submodules, and all self-hosted behavior is off by default in those repos — it only activates under this stack.
+
+A ~4 vCPU / 8 GB host comfortably handles **150k–200k monthly users**; past that you split the services across machines (managed Postgres, dedicated Redis, external S3) using the same images.
 
 ```bash
-git clone https://github.com/grovs-io/backend.git && cd backend
-cp .env.example .env
-docker compose run --rm web bin/rails db:encryption:init
-# Copy the three generated keys into .env
-docker compose up --build
-docker compose exec web bundle exec rails db:create db:migrate db:seed
+git clone --recursive https://github.com/grovs-io/self-host.git grovs-self-hosted
+cd grovs-self-hosted
+./scripts/setup.sh          # generates secrets + prints your admin password
+# set your two domains in .env, then:
+docker compose --profile standalone build
+docker compose --profile standalone up -d
 ```
 
-Backend starts on port 8765 with PostgreSQL, Redis, and Sidekiq workers. Deploy the [dashboard](https://github.com/grovs-io/dashboard) and point your SDK:
+▎ You need two separate registrable domains (production + test links), each with a wildcard DNS record. The full guide walks through DNS, env vars, SDK config, and scaling.
 
-```swift
-Grovs.configure(APIKey: "key", useTestEnvironment: false, baseURL: "https://yourdomain.com", delegate: self)
-```
+Get started with the [self-host repo](https://github.com/grovs-io/self-host) and the [self-hosting guide](https://docs.grovs.io/docs/self-hosting)..
 
-Full guide: [Backend](https://docs.grovs.io/docs/self-hosting/backend) · [Dashboard](https://docs.grovs.io/docs/self-hosting/dashboard) · [SDK config](https://docs.grovs.io/docs/self-hosting/sdk-configuration)
+<br><br>
 
 ## How it compares
 
