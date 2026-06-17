@@ -74,7 +74,7 @@ grovs.start();
 
 Setup guides: [iOS](https://docs.grovs.io/docs/sdk/ios/quick-start) · [Android](https://docs.grovs.io/docs/sdk/android/quick-start) · [Flutter](https://docs.grovs.io/docs/sdk/flutter/quick-start) · [React Native](https://docs.grovs.io/docs/sdk/react-native/quick-start) · [Web](https://docs.grovs.io/docs/sdk/web/quick-start)
 
-<br><br>
+<br>
 
 ### Self-hosted
   
@@ -93,7 +93,7 @@ docker compose --profile standalone up -d
 
 ▎ You need two separate registrable domains (production + test links), each with a wildcard DNS record. The full guide walks through DNS, env vars, SDK config, and scaling.
 
-Get started with the [self-host repo](https://github.com/grovs-io/self-host) and the [self-hosting guide](https://docs.grovs.io/docs/self-hosting)..
+Get started with the [self-host repo](https://github.com/grovs-io/self-host) and the [self-hosting guide](https://docs.grovs.io/docs/self-hosting).
 
 <br><br>
 
