@@ -1,51 +1,43 @@
 <a href="https://grovs.io">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://s3.eu-north-1.amazonaws.com/grovs.io/full-white.svg">
+    <source media="(prefers-color-scheme: dark)" srcset="https://s3.eu-north-1.amazonaws.com/grovs.io/full-black.svg">
     <img src="https://s3.eu-north-1.amazonaws.com/grovs.io/full-black.svg" width="120" alt="Grovs">
   </picture>
 </a>
 
-### The open-source mobile growth platform.
-Deep links, attribution, and campaign analytics. One SDK. Self-host or cloud.
+### Open-source deep linking, attribution and analytics for mobile apps.
+
+One SDK for iOS, Android, Flutter, React Native and web. Run it on your own servers or use the cloud.
 
 <a href="https://app.grovs.io">Cloud</a> ·
 <a href="https://docs.grovs.io">Docs</a> ·
-<a href="https://docs.grovs.io/docs/self-hosting">Self-Host</a> ·
+<a href="https://github.com/grovs-io/self-host">Self-host</a> ·
 <a href="https://grovs.io/pricing">Pricing</a>
 
 ---
 
-Branch charges $10,000+/year for deep linking and attribution -- and [shares your users' data with ad networks](https://www.grovs.io/blog/your-mmp-is-selling-your-users-data-i-read-the-privacy-policies-so-you-dont-have-to). Grovs does the same job for $180/year, keeps your data in the EU, and the code is open source.
-
-**Your data stays yours.** No ad network partnerships. No cross-platform tracking. No probabilistic fingerprinting. We make money from subscriptions, not from your users' data. [Read why that matters.](https://www.grovs.io/blog/your-mmp-is-selling-your-users-data-i-read-the-privacy-policies-so-you-dont-have-to)
+Grovs does what an MMP does, deep links, install attribution and campaign analytics, without sharing your users' data with ad networks. There are no ad-network partnerships, no cross-app tracking and no probabilistic fingerprinting. The cloud service is paid by subscription and hosted in the EU; the self-hosted edition keeps everything on your infrastructure. [Why that matters.](https://www.grovs.io/blog/your-mmp-is-selling-your-users-data-i-read-the-privacy-policies-so-you-dont-have-to)
 
 ## Features
 
-- **Smart links** -- one link that routes to the right destination on iOS, Android, or web
-- **Deferred deep linking** -- users land on the right in-app screen, even after installing from the store
-- **Attribution** -- track installs, reinstalls, and reactivations back to campaigns, referrals, or organic sources
-- **Campaigns** -- create, manage, and compare campaign performance
-- **Analytics dashboard** -- clicks, installs, revenue, and campaign performance in real time
-- **Revenue tracking** -- automatic IAP tracking with Apple and Google webhook integration
-- **In-app messages** -- targeted announcements, promos, and onboarding flows without an app update
-- **REST API** -- create and manage links programmatically
-- **Multi-tenant** -- one instance serves multiple apps and teams
+- **Smart links.** One link that opens the right destination on iOS, Android or web, with per-platform redirect rules and social previews.
+- **Deferred deep linking.** Users land on the right in-app screen after installing from the store.
+- **Attribution.** Installs, reinstalls and reactivations tied back to links, campaigns, referrals or organic.
+- **Campaigns.** Group links, compare performance, UTM tracking.
+- **Analytics.** Dashboard overview, event explorer with filters, sessions and retention, served from ClickHouse.
+- **In-app messages.** Announcements, promos and onboarding flows without an app update.
+- **Custom domains.** Serve links from a domain you or your customers own.
+- **Migration from Branch and AppsFlyer.** Old short links resolve upstream on first click, then become native Grovs links.
+- **REST API and MCP server.** Create and manage links programmatically or from an AI assistant.
+- **Multi-tenant.** One instance serves several apps and teams.
 
-## Roadmap
-
-We're building toward a full mobile growth platform -- everything CleverTap and Branch do, in one open-source product. What's coming:
-
-- [ ] **Event analytics + user journeys** -- custom events, funnels, user flows, session tracking (Q2 2026)
-- [ ] **Push campaigns** -- segmentation, scheduling, A/B testing (Q4 2026)
-- [ ] **Marketing automation** -- triggered campaigns based on user behavior (2027)
-
-Want to shape what we build next? [Open an issue](https://github.com/grovs-io/backend/issues) or reach out.
+**Enterprise Edition** adds single sign-on (OIDC) with SCIM provisioning, a tamper-evident audit log with a SIEM export API, and in-app purchase revenue tracking through Apple and Google webhooks. See [Editions](#editions).
 
 ## Quick start
 
-### Cloud (2 minutes)
+### Cloud
 
-Sign up at [app.grovs.io](https://app.grovs.io), create a project, add the SDK:
+Sign up at [app.grovs.io](https://app.grovs.io), create a project and add the SDK:
 
 ```swift
 // iOS — SPM: https://github.com/grovs-io/grovs-iOS.git
@@ -74,28 +66,32 @@ grovs.start();
 
 Setup guides: [iOS](https://docs.grovs.io/docs/sdk/ios/quick-start) · [Android](https://docs.grovs.io/docs/sdk/android/quick-start) · [Flutter](https://docs.grovs.io/docs/sdk/flutter/quick-start) · [React Native](https://docs.grovs.io/docs/sdk/react-native/quick-start) · [Web](https://docs.grovs.io/docs/sdk/web/quick-start)
 
-<br>
-
 ### Self-hosted
-  
-Grovs is fully self-hostable — run the entire platform on your own infrastructure with no feature gates and no data leaving your servers. A single Docker Compose stack brings up everything: the Rails backend, the Next.js dashboard, PostgreSQL, Redis, MinIO object storage, the Sidekiq workers, and a Caddy reverse proxy with automatic TLS. The backend and dashboard come in as git submodules, and all self-hosted behavior is off by default in those repos — it only activates under this stack.
 
-A ~4 vCPU / 8 GB host comfortably handles **150k–200k monthly users**; past that you split the services across machines (managed Postgres, dedicated Redis, external S3) using the same images.
+The self-hosted Community Edition runs from two published images, `ghcr.io/grovs-io/backend` and `ghcr.io/grovs-io/dashboard`, released together under one version. One command downloads the stack, asks for your domain and admin email, generates every secret and starts everything: the backend, the dashboard, PostgreSQL, Redis, ClickHouse, the background workers and a Caddy proxy with automatic TLS.
 
 ```bash
-git clone --recursive https://github.com/grovs-io/self-host.git grovs-self-hosted
-cd grovs-self-hosted
-./scripts/setup.sh          # generates secrets + prints your admin password
-# set your two domains in .env, then:
-docker compose --profile standalone build
-docker compose --profile standalone up -d
+curl -fsSL https://raw.githubusercontent.com/grovs-io/self-host/main/install.sh | bash
 ```
 
-▎ You need two separate registrable domains (production + test links), each with a wildcard DNS record. The full guide walks through DNS, env vars, SDK config, and scaling.
+Press Enter at the domain prompt to run a local trial on your machine at `http://dashboard.lvh.me:3002`, no DNS or TLS needed. For a real install, point your domain at the host first: the fixed hosts (`dashboard`, `api`, `sdk`, `go`, `mcp`, `preview`) plus a wildcard for project links and one for test links. A separate branded domain for links is supported.
 
-Get started with the [self-host repo](https://github.com/grovs-io/self-host) and the [self-hosting guide](https://docs.grovs.io/docs/self-hosting).
+Upgrading is changing `GROVS_VERSION` in `.env` and running `docker compose pull && docker compose up -d`. About 4 vCPU and 8 GB of RAM handle roughly 150,000 to 200,000 monthly users on one host; beyond that the same images run against managed PostgreSQL, ClickHouse and Redis.
 
-<br><br>
+Everything is in the [self-host repo](https://github.com/grovs-io/self-host): DNS, environment reference, optional features, SDK configuration, backups and scaling.
+
+## Editions
+
+| | Community Edition | Enterprise Edition |
+|---|---|---|
+| Deep links, attribution, campaigns, analytics, messages, custom domains, migration | Yes | Yes |
+| Single sign-on (OIDC) and SCIM provisioning | No | Yes |
+| Audit log with SIEM export | No | Yes |
+| In-app purchase revenue tracking | No | Yes |
+| Source | `backend` and `dashboard` repos, MIT | `ee/` directory, [Enterprise License](https://github.com/grovs-io/backend/blob/main/ee/LICENSE) |
+| Image | `ghcr.io/grovs-io/backend`, public | built with `GROVS_EE=true`, provided under contract |
+
+The Community Edition image is built without the `ee/` directory, so enterprise features are not present in it and cannot be switched on by configuration. The cloud service includes the enterprise features on the corresponding plans.
 
 ## How it compares
 
@@ -104,35 +100,28 @@ Get started with the [self-host repo](https://github.com/grovs-io/self-host) and
 | Deep linking | Yes | No | Yes |
 | Attribution | Yes | Yes | Yes |
 | Campaign analytics | Limited | Yes | Yes |
-| Revenue tracking | No | Yes | Yes |
-| Open source | No | No | Yes (MIT) |
+| Revenue tracking | No | Yes | Yes, Enterprise |
+| Open source | No | No | Yes, MIT core |
 | Self-hostable | No | No | Yes |
 | Data shared with ad networks | [Yes](https://branch.io/policies/privacy-policy/) | [Yes](https://www.appsflyer.com/privacy-policy/) | No |
-| Pricing | "Contact sales" | $15K+/yr | From $2k/yr |
+| Pricing | Contact sales | Contact sales | [Published](https://grovs.io/pricing) |
 
 ## Architecture
 
-Rails backend with subdomain-based routing:
-
-- `api.*` — dashboard API (OAuth2)
-- `sdk.*` — mobile SDK endpoints
-- `go.*` — short link redirects
-- `preview.*` — link preview pages
-
-Background processing via five Sidekiq workers for event ingestion, batch processing, scheduling, device updates, and maintenance.
-
 ```
-┌──────────────┐       ┌─────────────────────────────────┐
-│  Dashboard   │─────▶ │        Backend (Rails)          │
-│  (Next.js)   │       │                                 │
-└──────────────┘       │  api · sdk · go · preview       │
-                       │                                 │
-┌──────────────┐       │  ┌────────────┐  ┌────────────┐ │
-│  Mobile SDKs │─────▶ │  │ PostgreSQL │  │ Redis +    │ │
-│  & Web SDK   │       │  │            │  │ Sidekiq    │ │
-└──────────────┘       │  └────────────┘  └────────────┘ │
-                       └─────────────────────────────────┘
+┌──────────────┐      ┌──────────────────────────────────────────────┐
+│  Dashboard   │────▶ │              Backend (Rails)                 │
+│  (Next.js)   │      │   api.* · sdk.* · go.* · preview.* · links   │
+└──────────────┘      │                                              │
+                      │  ┌────────────┐ ┌────────────┐ ┌──────────┐ │
+┌──────────────┐      │  │ PostgreSQL │ │ ClickHouse │ │ Redis +  │ │
+│  SDKs & web  │────▶ │  │ links,     │ │ events,    │ │ Sidekiq  │ │
+└──────────────┘      │  │ users      │ │ analytics  │ │ workers  │ │
+                      │  └────────────┘ └────────────┘ └──────────┘ │
+                      └──────────────────────────────────────────────┘
 ```
+
+The backend routes by subdomain: `api.*` serves the dashboard API (OAuth2), `sdk.*` the mobile and web SDKs, `go.*` and the project subdomains resolve links, `preview.*` renders link previews. PostgreSQL holds projects, links, users and devices; ClickHouse is the event store and serves every analytics read; Redis queues events and backs the Sidekiq workers that ingest events, build sessions, rebuild analytics rollups and run maintenance. The dashboard is a Next.js app configured at start, so one image serves every deployment.
 
 ## SDKs
 
@@ -148,9 +137,21 @@ Background processing via five Sidekiq workers for event ingestion, batch proces
 
 | Repo | What it is |
 |------|-----------|
-| [backend](https://github.com/grovs-io/backend) | Rails API, link engine, attribution, workers |
+| [self-host](https://github.com/grovs-io/self-host) | Installer, Compose stack and self-hosting guide |
+| [backend](https://github.com/grovs-io/backend) | Rails API, link engine, attribution, analytics, workers |
 | [dashboard](https://github.com/grovs-io/dashboard) | Next.js web dashboard |
-| [mcp-server](https://github.com/grovs-io/mcp) | MCP server for AI-assisted link management |
+| [mcp](https://github.com/grovs-io/mcp) | MCP server for AI-assisted link management |
+
+Releases are versioned together: a backend, dashboard and self-host tag with the same number belong to one release.
+
+## Roadmap
+
+- [x] Event analytics, sessions and retention
+- [x] Self-hosted Community Edition with published images and a one-command installer
+- [ ] Push campaigns: segmentation, scheduling, A/B testing (2027)
+- [ ] Marketing automation: triggered campaigns based on user behaviour (2027)
+
+To influence what comes next, [open an issue](https://github.com/grovs-io/backend/issues).
 
 ## Migrating?
 
@@ -163,4 +164,4 @@ Background processing via five Sidekiq workers for event ingestion, batch proces
 
 ## License
 
-Core is [MIT](LICENSE). Enterprise features (`ee/` directory) require a separate license for production use.
+The backend core and the dashboard are MIT. The backend's `ee/` directory is covered by the [Grovs Enterprise License](https://github.com/grovs-io/backend/blob/main/ee/LICENSE) and requires a commercial agreement for production use.
