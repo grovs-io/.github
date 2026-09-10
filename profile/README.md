@@ -131,7 +131,7 @@ The backend routes by subdomain: `api.*` serves the dashboard API (OAuth2), `sdk
 | Android | `implementation("io.grovs:Grovs:1.1.0")` | [grovs-io/grovs-android](https://github.com/grovs-io/grovs-android) |
 | Flutter | `grovs_flutter_plugin: ^1.0.1` | [grovs-io/grovs-flutter](https://github.com/grovs-io/grovs-flutter) |
 | React Native | `npm install react-native-grovs-wrapper` | [grovs-io/grovs-react-native](https://github.com/grovs-io/grovs-react-native) |
-| Web | `npm install grovs` | [grovs-io/grovs-web](https://github.com/grovs-io/grovs-web) |
+| Web | `npm install grovs` | [grovs-io/grovs-web](https://github.com/grovs-io/grovs-js) |
 
 ## Repos
 
