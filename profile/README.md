@@ -14,6 +14,8 @@ One SDK for iOS, Android, Flutter, React Native, Unity and web. Run it on your o
 <a href="https://github.com/grovs-io/self-host">Self-host</a> ·
 <a href="https://grovs.io/pricing">Pricing</a>
 
+<img src="assets/grovs.gif" alt="grovs: deep links, analytics, journeys, push and in-app messages" width="900" />
+
 ---
 
 Grovs does what an MMP does, deep links, install attribution and campaign analytics, without sharing your users' data with ad networks. There are no ad-network partnerships, no cross-app tracking and no probabilistic fingerprinting. The cloud service is paid by subscription and hosted in the EU; the self-hosted edition keeps everything on your infrastructure. [Why that matters.](https://www.grovs.io/blog/your-mmp-is-selling-your-users-data-i-read-the-privacy-policies-so-you-dont-have-to)
