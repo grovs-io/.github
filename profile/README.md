@@ -5,7 +5,7 @@
   </picture>
 </a>
 
-### Open-source deep linking, attribution and analytics for mobile apps.
+### Open-source deep linking, attribution, analytics and engagement for mobile apps.
 
 One SDK for iOS, Android, Flutter, React Native and web. Run it on your own servers or use the cloud.
 
@@ -24,14 +24,14 @@ Grovs does what an MMP does, deep links, install attribution and campaign analyt
 - **Deferred deep linking.** Users land on the right in-app screen after installing from the store.
 - **Attribution.** Installs, reinstalls and reactivations tied back to links, campaigns, referrals or organic.
 - **Campaigns.** Group links, compare performance, UTM tracking.
-- **Analytics.** Dashboard overview, event explorer with filters, sessions and retention, served from ClickHouse.
-- **In-app messages.** Announcements, promos and onboarding flows without an app update.
+- **Analytics.** Built-in and custom dashboards, an event explorer with filters and breakdowns, sessions and retention, served from ClickHouse.
+- **Smart banners.** App download banners for your website that open the app on the same content.
 - **Custom domains.** Serve links from a domain you or your customers own.
 - **Migration from Branch and AppsFlyer.** Old short links resolve upstream on first click, then become native Grovs links.
-- **REST API and MCP server.** Create and manage links programmatically or from an AI assistant.
+- **REST API and MCP server.** Create and manage links and read analytics programmatically or from an AI assistant.
 - **Multi-tenant.** One instance serves several apps and teams.
 
-**Enterprise Edition** adds single sign-on (OIDC) with SCIM provisioning, a tamper-evident audit log with a SIEM export API, and in-app purchase revenue tracking through Apple and Google webhooks. See [Editions](#editions).
+**Enterprise Edition** adds engagement and compliance: audience segments, push campaigns, in-app messages and surveys, multi-step journeys across push and in-app, event streaming to your own storage, in-app purchase revenue tracking, single sign-on (OIDC) with SCIM provisioning, and a tamper-evident audit log with a SIEM export API. See [Editions](#editions).
 
 ## Quick start
 
@@ -40,35 +40,37 @@ Grovs does what an MMP does, deep links, install attribution and campaign analyt
 Sign up at [app.grovs.io](https://app.grovs.io), create a project and add the SDK:
 
 ```swift
-// iOS — SPM: https://github.com/grovs-io/grovs-iOS.git
+// iOS — SPM: https://github.com/grovs-io/grovs-iOS.git (from: "3.1.0"), or pod 'Grovs', '~> 3.1'
 Grovs.configure(APIKey: "your-api-key", useTestEnvironment: false, delegate: self)
 ```
 
 ```kotlin
-// Android — io.grovs:Grovs:1.1.0
-Grovs.configure(this, "your-api-key")
+// Android — implementation("io.grovs:Grovs:3.1.0")
+Grovs.configure(this, "your-api-key", useTestEnvironment = false)
 ```
 
-```dart
-// Flutter — grovs_flutter_plugin: ^1.0.1
-final grovs = Grovs();
+```yaml
+# Flutter — pubspec.yaml. No Dart call: set GrovsApiKey in Info.plist and grovs_api_key in AndroidManifest.xml
+dependencies:
+  grovs_flutter_plugin: ^3.1.1
+```
+
+```bash
+# React Native — configured natively, or with the Expo config plugin (apiKey in app.json)
+npm install react-native-grovs-wrapper
 ```
 
 ```javascript
 // Web — npm install grovs
-const grovs = new Grovs('your-api-key', (data) => console.log(data));
-grovs.start();
-```
-
-```bash
-# React Native — npm install react-native-grovs-wrapper
+import Grovs from "grovs";
+await Grovs.configure({ apiKey: "your-api-key" });
 ```
 
 Setup guides: [iOS](https://docs.grovs.io/docs/sdk/ios/quick-start) · [Android](https://docs.grovs.io/docs/sdk/android/quick-start) · [Flutter](https://docs.grovs.io/docs/sdk/flutter/quick-start) · [React Native](https://docs.grovs.io/docs/sdk/react-native/quick-start) · [Web](https://docs.grovs.io/docs/sdk/web/quick-start)
 
 ### Self-hosted
 
-The self-hosted Community Edition runs from two published images, `ghcr.io/grovs-io/backend` and `ghcr.io/grovs-io/dashboard`, released together under one version. One command downloads the stack, asks for your domain and admin email, generates every secret and starts everything: the backend, the dashboard, PostgreSQL, Redis, ClickHouse, the background workers and a Caddy proxy with automatic TLS.
+The self-hosted Community Edition runs from two published images, `ghcr.io/grovs-io/backend` and `ghcr.io/grovs-io/dashboard`, released together under one version (currently **3.0.0**). One command downloads the stack, asks for your domain and admin email, generates every secret and starts everything: the backend, the dashboard, PostgreSQL, Redis, ClickHouse, the background workers and a Caddy proxy with automatic TLS.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/grovs-io/self-host/main/install.sh | bash
@@ -76,22 +78,26 @@ curl -fsSL https://raw.githubusercontent.com/grovs-io/self-host/main/install.sh 
 
 Press Enter at the domain prompt to run a local trial on your machine at `http://dashboard.lvh.me:3002`, no DNS or TLS needed. For a real install, point your domain at the host first: the fixed hosts (`dashboard`, `api`, `sdk`, `go`, `mcp`, `preview`) plus a wildcard for project links and one for test links. A separate branded domain for links is supported.
 
-Upgrading is changing `GROVS_VERSION` in `.env` and running `docker compose pull && docker compose up -d`. About 4 vCPU and 8 GB of RAM handle roughly 150,000 to 200,000 monthly users on one host; beyond that the same images run against managed PostgreSQL, ClickHouse and Redis.
+To upgrade, back up first, set `GROVS_VERSION` in `.env` and follow the [upgrade steps](https://github.com/grovs-io/self-host#upgrades); migrations run as part of them. About 4 vCPU and 8 GB of RAM handle roughly 150,000 to 200,000 monthly users on one host; beyond that the same images run against managed PostgreSQL, ClickHouse and Redis.
 
-Everything is in the [self-host repo](https://github.com/grovs-io/self-host): DNS, environment reference, optional features, SDK configuration, backups and scaling.
+Everything is in the [self-host repo](https://github.com/grovs-io/self-host): DNS, environment reference, optional features, SDK configuration, backups, scaling, and one-click templates for Railway, Render, Coolify, Dokploy, Easypanel, CapRover and the major clouds.
 
 ## Editions
 
 | | Community Edition | Enterprise Edition |
 |---|---|---|
-| Deep links, attribution, campaigns, analytics, messages, custom domains, migration | Yes | Yes |
+| Deep links, attribution, campaigns, analytics and dashboards, smart banners, custom domains, migration, REST API and MCP | Yes | Yes |
+| Audience segments | No | Yes |
+| Push campaigns, in-app messages and surveys | No | Yes |
+| Journeys across push and in-app | No | Yes |
+| Event streaming and data export | No | Yes |
+| In-app purchase revenue tracking | No | Yes |
 | Single sign-on (OIDC) and SCIM provisioning | No | Yes |
 | Audit log with SIEM export | No | Yes |
-| In-app purchase revenue tracking | No | Yes |
-| Source | `backend` and `dashboard` repos, MIT | `ee/` directory, [Enterprise License](https://github.com/grovs-io/backend/blob/main/ee/LICENSE) |
-| Image | `ghcr.io/grovs-io/backend`, public | built with `GROVS_EE=true`, provided under contract |
+| Source | `backend` and `dashboard` repos, MIT | `ee/` directories, [Enterprise License](https://github.com/grovs-io/backend/blob/main/ee/LICENSE) |
+| Image | `ghcr.io/grovs-io/backend` and `dashboard`, public | built with `GROVS_EE=true`, provided under contract |
 
-The Community Edition image is built without the `ee/` directory, so enterprise features are not present in it and cannot be switched on by configuration. The cloud service includes the enterprise features on the corresponding plans.
+The Community Edition images are built without the `ee/` code, so enterprise features are not present in them and cannot be switched on by configuration. The cloud service includes the enterprise features on the corresponding plans.
 
 ## How it compares
 
@@ -121,42 +127,44 @@ The Community Edition image is built without the `ee/` directory, so enterprise 
                       └──────────────────────────────────────────────┘
 ```
 
-The backend routes by subdomain: `api.*` serves the dashboard API (OAuth2), `sdk.*` the mobile and web SDKs, `go.*` and the project subdomains resolve links, `preview.*` renders link previews. PostgreSQL holds projects, links, users and devices; ClickHouse is the event store and serves every analytics read; Redis queues events and backs the Sidekiq workers that ingest events, build sessions, rebuild analytics rollups and run maintenance. The dashboard is a Next.js app configured at start, so one image serves every deployment.
+The backend routes by subdomain: `api.*` serves the dashboard API (OAuth2), `sdk.*` the mobile and web SDKs, `go.*` and the project subdomains resolve links, `preview.*` renders link previews. PostgreSQL holds projects, links, users and devices; ClickHouse is the event store and serves every analytics read; Redis queues events and backs the Sidekiq workers that ingest events, build sessions, rebuild analytics rollups and run maintenance (and, in the Enterprise Edition, deliver push campaigns, journeys and event streams). The dashboard is a Next.js app configured at start, so one image serves every deployment.
 
 ## SDKs
 
 | Platform | Install | Source |
 |----------|---------|--------|
-| iOS | SPM / CocoaPods | [grovs-io/grovs-iOS](https://github.com/grovs-io/grovs-iOS) |
-| Android | `implementation("io.grovs:Grovs:1.1.0")` | [grovs-io/grovs-android](https://github.com/grovs-io/grovs-android) |
-| Flutter | `grovs_flutter_plugin: ^1.0.1` | [grovs-io/grovs-flutter](https://github.com/grovs-io/grovs-flutter) |
-| React Native | `npm install react-native-grovs-wrapper` | [grovs-io/grovs-react-native](https://github.com/grovs-io/grovs-react-native) |
-| Web | `npm install grovs` | [grovs-io/grovs-web](https://github.com/grovs-io/grovs-js) |
+| iOS | SPM `from: "3.1.0"` / CocoaPods `pod 'Grovs', '~> 3.1'` | [grovs-io/grovs-iOS](https://github.com/grovs-io/grovs-iOS) |
+| Android | `implementation("io.grovs:Grovs:3.1.0")` | [grovs-io/grovs-android](https://github.com/grovs-io/grovs-android) |
+| Flutter | `grovs_flutter_plugin: ^3.1.1` | [grovs-io/grovs-flutter](https://github.com/grovs-io/grovs-flutter) |
+| React Native | `npm install react-native-grovs-wrapper` (3.1.0) | [grovs-io/grovs-react-native](https://github.com/grovs-io/grovs-react-native) |
+| Web | `npm install grovs` (2.1.0) | [grovs-io/grovs-js](https://github.com/grovs-io/grovs-js) |
 
 ## Repos
 
 | Repo | What it is |
 |------|-----------|
-| [self-host](https://github.com/grovs-io/self-host) | Installer, Compose stack and self-hosting guide |
+| [self-host](https://github.com/grovs-io/self-host) | Installer, Compose stack, platform templates and self-hosting guide |
 | [backend](https://github.com/grovs-io/backend) | Rails API, link engine, attribution, analytics, workers |
 | [dashboard](https://github.com/grovs-io/dashboard) | Next.js web dashboard |
-| [mcp](https://github.com/grovs-io/mcp) | MCP server for AI-assisted link management |
+| [mcp](https://github.com/grovs-io/mcp) | MCP server for AI assistants |
 
-Releases are versioned together: a backend, dashboard and self-host tag with the same number belong to one release.
+Releases are versioned together: a backend, dashboard and self-host tag with the same number belong to one release. Each repo's `CHANGELOG.md` and GitHub release notes list what changed and how to upgrade.
 
 ## Roadmap
 
 - [x] Event analytics, sessions and retention
 - [x] Self-hosted Community Edition with published images and a one-command installer
-- [ ] Push campaigns: segmentation, scheduling, A/B testing (2027)
-- [ ] Marketing automation: triggered campaigns based on user behaviour (2027)
+- [x] Custom dashboards and smart banners
+- [x] Segments, push campaigns, in-app messages and journeys (Enterprise)
+- [ ] Unity SDK
 
 To influence what comes next, [open an issue](https://github.com/grovs-io/backend/issues).
 
 ## Migrating?
 
 - [From Firebase Dynamic Links](https://docs.grovs.io/docs/migration-guides/firebase-dynamic-links)
-- [From Branch.io](https://docs.grovs.io/docs/migration-guides/branch-io)
+- [From Branch.io](https://docs.grovs.io/docs/migration-guides/branch)
+- [From AppsFlyer](https://docs.grovs.io/docs/migration-guides/appsflyer)
 
 ## Docs
 
@@ -164,4 +172,4 @@ To influence what comes next, [open an issue](https://github.com/grovs-io/backen
 
 ## License
 
-The backend core and the dashboard are MIT. The backend's `ee/` directory is covered by the [Grovs Enterprise License](https://github.com/grovs-io/backend/blob/main/ee/LICENSE) and requires a commercial agreement for production use.
+The backend and the dashboard are MIT. The `ee/` directory in each is covered by the [Grovs Enterprise License](https://github.com/grovs-io/backend/blob/main/ee/LICENSE) and requires a commercial agreement for production use.
