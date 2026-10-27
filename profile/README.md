@@ -7,7 +7,7 @@
 
 ### Open-source deep linking, attribution, analytics and engagement for mobile apps.
 
-One SDK for iOS, Android, Flutter, React Native and web. Run it on your own servers or use the cloud.
+One SDK for iOS, Android, Flutter, React Native, Unity and web. Run it on your own servers or use the cloud.
 
 <a href="https://app.grovs.io">Cloud</a> ·
 <a href="https://docs.grovs.io">Docs</a> ·
@@ -60,13 +60,20 @@ dependencies:
 npm install react-native-grovs-wrapper
 ```
 
+```csharp
+// Unity — Package Manager git URL https://github.com/grovs-io/grovs-unity.git#upm/1.0.0, or openupm add com.grovs.sdk
+// No init call: set the API key, URI scheme and link domains in Project Settings > Grovs
+using GrovsSDK;
+Grovs.DeeplinkReceived += link => Debug.Log(link);
+```
+
 ```javascript
 // Web — npm install grovs
 import Grovs from "grovs";
 await Grovs.configure({ apiKey: "your-api-key" });
 ```
 
-Setup guides: [iOS](https://docs.grovs.io/docs/sdk/ios/quick-start) · [Android](https://docs.grovs.io/docs/sdk/android/quick-start) · [Flutter](https://docs.grovs.io/docs/sdk/flutter/quick-start) · [React Native](https://docs.grovs.io/docs/sdk/react-native/quick-start) · [Web](https://docs.grovs.io/docs/sdk/web/quick-start)
+Setup guides: [iOS](https://docs.grovs.io/docs/sdk/ios/quick-start) · [Android](https://docs.grovs.io/docs/sdk/android/quick-start) · [Flutter](https://docs.grovs.io/docs/sdk/flutter/quick-start) · [React Native](https://docs.grovs.io/docs/sdk/react-native/quick-start) · [Unity](https://docs.grovs.io/docs/sdk/unity/quick-start) · [Web](https://docs.grovs.io/docs/sdk/web/quick-start)
 
 ### Self-hosted
 
@@ -137,6 +144,7 @@ The backend routes by subdomain: `api.*` serves the dashboard API (OAuth2), `sdk
 | Android | `implementation("io.grovs:Grovs:3.1.0")` | [grovs-io/grovs-android](https://github.com/grovs-io/grovs-android) |
 | Flutter | `grovs_flutter_plugin: ^3.1.1` | [grovs-io/grovs-flutter](https://github.com/grovs-io/grovs-flutter) |
 | React Native | `npm install react-native-grovs-wrapper` (3.1.0) | [grovs-io/grovs-react-native](https://github.com/grovs-io/grovs-react-native) |
+| Unity | Package Manager `https://github.com/grovs-io/grovs-unity.git#upm/1.0.0` / OpenUPM `com.grovs.sdk` | [grovs-io/grovs-unity](https://github.com/grovs-io/grovs-unity) |
 | Web | `npm install grovs` (2.1.0) | [grovs-io/grovs-js](https://github.com/grovs-io/grovs-js) |
 
 ## Repos
@@ -156,7 +164,7 @@ Releases are versioned together: a backend, dashboard and self-host tag with the
 - [x] Self-hosted Community Edition with published images and a one-command installer
 - [x] Custom dashboards and smart banners
 - [x] Segments, push campaigns, in-app messages and journeys (Enterprise)
-- [ ] Unity SDK
+- [x] Unity SDK
 
 To influence what comes next, [open an issue](https://github.com/grovs-io/backend/issues).
 
